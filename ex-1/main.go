@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"math"
 	"strconv"
@@ -119,8 +118,4 @@ func checkBase2(num string) (int, error) {
 		}
 	}
 	return iDot, nil
-}
-
-func main() {
-	fmt.Println(base10ToBase2(5.7))
 }
