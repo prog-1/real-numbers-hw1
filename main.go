@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"math"
 	"regexp"
 	"strconv"
@@ -35,10 +34,25 @@ func base2ToBase10(num string) (float64, error) {
 	return output, nil
 }
 
-func main() {
-	a, err := base2ToBase10(".11")
-	if err != nil {
-		log.Fatal(err)
+func base10ToBase2(num float64) (out string) {
+	// Get whole and decimal parts
+	// Divide whole part by 2 until it's 0
+	// Add the residue to the slice straight away
+
+	// Whole part
+	for wp := math.Floor(num); wp != 0; {
+		wp = wp / 2
+		if wp-math.Floor(wp) > 0 {
+			out = "1" + out
+		} else {
+			out = "0" + out
+		}
+		wp = math.Floor(wp)
 	}
+	return out
+}
+
+func main() {
+	a := base10ToBase2(22.0)
 	fmt.Println(a)
 }

@@ -28,20 +28,33 @@ func TestIsInputCorrect(t *testing.T) {
 }
 
 func TestBase2ToBase10(t *testing.T) {
-	type Want struct {
-		num float64
-		err error
-	}
 	for _, tc := range []struct {
 		input string
-		want  Want
+		want  float64
 	}{
-		{"11.001", Want{3.125, nil}},
-		{"-11.001", Want{-3.125, nil}},
-		{".001", Want{0.125, nil}},
+		{"11", 3},
+		{"11.001", 3.125},
+		{"-11.001", -3.125},
+		{".001", 0.125},
 	} {
-		if gotNum, gotErr := base2ToBase10(tc.input); gotNum != tc.want.num || gotErr != tc.want.err {
-			t.Errorf("base2ToBase10() Failed with input \"%s\": got = %f, %s; want = %f, %s", tc.input, gotNum, gotErr.Error(), tc.want.num, tc.want.err.Error())
+		if got, _ := base2ToBase10(tc.input); got != tc.want {
+			t.Errorf("base2ToBase10() failed with input \"%s\": got = %f, want = %f", tc.input, got, tc.want)
+		}
+	}
+}
+
+func TestBase10ToBase2(t *testing.T) {
+	for _, tc := range []struct {
+		input float64
+		want  string
+	}{
+		{22.0, "10110"},
+		{3.125, "11.001"},
+		{-3.125, "-11.001"},
+		{0.125, ".001"},
+	} {
+		if got := base10ToBase2(tc.input); got != tc.want {
+			t.Errorf("base10ToBase10() failed with input \"%f\": got = %s, want = %s", tc.input, got, tc.want)
 		}
 	}
 }
