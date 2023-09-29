@@ -47,7 +47,7 @@ func TestBase2ToBase10(t *testing.T) {
 	}
 }
 
-func main() {
+func main1() {
 	testing.Main(
 		/* matchString */ func(a, b string) (bool, error) { return a == b, nil },
 		/* tests */ []testing.InternalTest{
