@@ -2,42 +2,73 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 func PatternMatching(s [][]string) {
-	var res []string
-	for _, x := range s {
+	for num, x := range s {
 		currRes := x[0]
 		for i := 1; i < len(x); i++ {
 			current := x[i]
-			if currRes[0] == '*' {
-				diff := int(math.Abs(float64(len(currRes) - len(current))))
-				if current[0] == '*' {
-					if len(currRes) < len(current) {
-						if currRes[1:] == current[diff+1:] {
-							currRes = current
-						} else {
-							currRes = "*"
+			if current[0] != '*' {
+				if currRes[0] != '*' {
+					isWrong := false
+					for i := 0; current[i] != '*' && currRes[i] != '*'; i++ {
+						if current[i] != currRes[i] {
+							isWrong = true
 							break
 						}
-					} else if len(currRes) >= len(current) && currRes[diff+1:] != current[1:] {
+					}
+					if isWrong {
 						currRes = "*"
 						break
+					}
+					if len(current) > len(currRes) {
+						currRes = current
+					}
+				}
+			}
+			if current[len(current)-1] != '*' {
+				if currRes[len(currRes)-1] != '*' {
+					isWrong := false
+					for i, j := len(current)-1, len(currRes)-1; current[i] != '*' && currRes[j] != '*'; i, j = i-1, j-1 {
+						if current[i] != currRes[j] {
+							isWrong = true
+							break
+						}
+					}
+					if isWrong {
+						currRes = "*"
+						break
+					}
+					if len(current) > len(currRes) {
+						currRes = current
 					}
 				}
 			}
 		}
-		if currRes[0] == '*' && len(currRes) > 1 {
-			currRes = currRes[1:]
+		for i := 0; i < len(currRes) && len(currRes) > 1; i++ { // remove all '*'
+			if currRes[i] == '*' {
+				currRes = currRes[:i] + currRes[i+1:]
+			}
 		}
-		res = append(res, currRes)
-	}
-	for i := range res {
-		fmt.Printf("Case #%v: %v\n", i+1, res[i])
+		fmt.Printf("Case #%v: %v\n", num+1, currRes)
 	}
 }
 
 func main() {
-	PatternMatching([][]string{{"*CONUTS", "*COCONUTS", "*OCONUTS", "*CONUTS", "*S"}, {"*XZ", "*ZYX"}, {"H*O", "HELLO*", "*HELLO", "HE*"}})
+	var t int
+	fmt.Scan(&t)
+	var s [][]string
+	for ; t > 0; t-- {
+		var n int
+		fmt.Scan(&n)
+		var pat []string
+		for ; n > 0; n-- {
+			var p string
+			fmt.Scan(&p)
+			pat = append(pat, p)
+		}
+		s = append(s, pat)
+	}
+	PatternMatching(s)
 }
